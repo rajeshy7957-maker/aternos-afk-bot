@@ -3,12 +3,12 @@ const mineflayer = require('mineflayer')
 function createBot() {
     console.log('🔄 Connecting to Minecraft...')
 
-    const bot = mineflayer.createBot({
-        host: 'deadyfun.aternos.me',
-        port: 51380,
-        username: 'deadlyfun',
-        version: false
-    })
+const bot = mineflayer.createBot({
+    host: 'blackfish.aternos.host',
+    port: 51380,
+    username: 'deadlyfun',
+    version: false
+ })
 
     bot.once('spawn', () => {
         console.log('✅ BOT JOINED!')
