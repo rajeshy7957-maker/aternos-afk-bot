@@ -1,15 +1,4 @@
-const http = require('http')
 const mineflayer = require('mineflayer')
-
-const PORT = process.env.PORT || 10000
-
-// Render ko web service alive dikhane ke liye
-http.createServer((req, res) => {
-    res.writeHead(200)
-    res.end('Minecraft AFK Bot is running!')
-}).listen(PORT, () => {
-    console.log(`🌐 Web server running on port ${PORT}`)
-})
 
 function createBot() {
     console.log('🔄 Connecting to Minecraft...')
@@ -27,8 +16,6 @@ function createBot() {
         setInterval(() => {
             const moves = ['forward', 'back', 'left', 'right']
             const move = moves[Math.floor(Math.random() * moves.length)]
-
-            console.log('➡️ Moving:', move)
 
             bot.setControlState(move, true)
 
