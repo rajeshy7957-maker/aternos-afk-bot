@@ -26,7 +26,7 @@ function createBot() {
     const bot = mineflayer.createBot({
         host: 'deadyfun.aternos.me',
         port: 51380,
-        username: 'deadlyfun',
+        username: 'dedlyfun',
         version: '1.21.11'
     })
 
