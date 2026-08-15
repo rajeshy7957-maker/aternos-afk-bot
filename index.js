@@ -17,7 +17,7 @@ function createBot() {
     console.log('🔄 Connecting to Minecraft...')
 
     const bot = mineflayer.createBot({
-        host: 'blackfish.aternos.host',
+        host: 'deadyfun.aternos.me',
         port: 51380,
         username: 'deadlyfun',
         version: false
