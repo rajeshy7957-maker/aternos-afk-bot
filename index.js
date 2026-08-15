@@ -1,59 +1,68 @@
-const mineflayer = require('mineflayer');
-const express = require('express');
+const http = require('http')
+const mineflayer = require('mineflayer')
 
-// Express Web Server (Render ko Active Rakhne Ke Liye)
-const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000
 
-app.get('/', (req, res) => {
-    res.send('AFK Bot Online Hai!');
-});
+// Render ko web service alive dikhane ke liye
+http.createServer((req, res) => {
+    res.writeHead(200)
+    res.end('Minecraft AFK Bot is running!')
+}).listen(PORT, () => {
+    console.log(`🌐 Web server running on port ${PORT}`)
+})
 
-app.listen(port, () => {
-    console.log('Web server running on port ' + port);
-});
-
-// Mineflayer Bot Logic
 function createBot() {
+    console.log('🔄 Connecting to Minecraft...')
+
     const bot = mineflayer.createBot({
         host: 'deadyfun.aternos.me',
         port: 51380,
-        username: 'dedlyfun'
-    });
+        username: 'deadlyfun',
+        version: false
+    })
 
-    bot.on('spawn', () => {
-        console.log('✅ Bot successful join ho gaya!');
+    bot.once('spawn', () => {
+        console.log('✅ BOT JOINED!')
 
-        // Anti-AFK Jump + Movement
         setInterval(() => {
-            const actions = ['forward', 'back', 'left', 'right'];
-            const randomAction = actions[Math.floor(Math.random() * actions.length)];
+            const moves = ['forward', 'back', 'left', 'right']
+            const move = moves[Math.floor(Math.random() * moves.length)]
 
-            bot.setControlState(randomAction, true);
-            bot.setControlState('jump', true);
+            console.log('➡️ Moving:', move)
 
-            const yaw = Math.random() * Math.PI * 2;
-            const pitch = (Math.random() - 0.5) * Math.PI;
-            bot.look(yaw, pitch, true);
+            bot.setControlState(move, true)
 
             setTimeout(() => {
-                bot.clearControlStates();
-            }, 1500);
-        }, 4000);
-    });
+                bot.setControlState(move, false)
+            }, 2000)
+
+            setTimeout(() => {
+                bot.setControlState('jump', true)
+
+                setTimeout(() => {
+                    bot.setControlState('jump', false)
+                }, 500)
+            }, 500)
+
+        }, 4000)
+    })
 
     bot.on('chat', (username, message) => {
-        if (username === bot.username) return;
-        console.log(`💬 [Chat] ${username}: ${message}`);
-    });
+        console.log(`${username}: ${message}`)
+    })
 
-    // Auto-Reconnect setup
+    bot.on('error', (err) => {
+        console.log('❌ Error:', err.message)
+    })
+
     bot.on('end', () => {
-        console.log('⚠️ Disconnected/Kicked! 10 sec me reconnect ho raha hu...');
-        setTimeout(createBot, 10000);
-    });
+        console.log('❌ Bot disconnected!')
+        console.log('🔄 Reconnecting in 10 seconds...')
 
-    bot.on('error', err => console.log('❌ Error:', err));
+        setTimeout(() => {
+            createBot()
+        }, 10000)
+    })
 }
 
-createBot();
+createBot()
