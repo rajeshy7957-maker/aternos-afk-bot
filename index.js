@@ -27,7 +27,7 @@ function createBot() {
         host: 'deadyfun.aternos.me',
         port: 51380,
         username: 'deadlyfun',
-        version: false
+        version: '1.21.11'
     })
 
     // =========================
@@ -37,7 +37,6 @@ function createBot() {
     bot.once('spawn', () => {
         console.log('✅ BOT JOINED!')
 
-        // Movement
         setInterval(() => {
             if (!bot.entity) return
 
@@ -89,7 +88,7 @@ function createBot() {
     })
 
     // =========================
-    // Disconnect / Reconnect
+    // Auto Reconnect
     // =========================
 
     bot.on('end', () => {
